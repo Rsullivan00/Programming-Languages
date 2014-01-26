@@ -1,3 +1,7 @@
+/*	sort.c
+	Author: Rick Sullivan
+	Date: 1/25/2014
+*/
 # include "stdio.h"
 # include "stdlib.h"
 
