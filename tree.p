@@ -6,6 +6,16 @@ program treePascal (input, output);
                 	right : tree;
         end;
 
+	procedure destroyTree(var root : tree);
+	begin
+		if root = nil then
+			exit();
+
+		destroyTree(root^.left);	
+		destroyTree(root^.right);	
+		dispose(root)
+	end;
+
         function insert (var root : tree; value : integer) : tree;
         begin
 		if root = nil then 
@@ -35,7 +45,7 @@ program treePascal (input, output);
 			exit(member(root^.left, value))
 	end;
 
-	var t : tree; x : integer;
+		var t : tree; x : integer;
 begin
 	t := nil;
 	readln(x);
@@ -54,4 +64,6 @@ begin
 			writeln('false');
 		readln(x);
 	end;
+
+	destroyTree(t);
 end.            
