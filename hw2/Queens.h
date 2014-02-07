@@ -2,26 +2,34 @@
 # define QUEENS_H
 
 class Piece {
-private:
-	int position;
+protected:
+	int _row;
+	int _column;
 	
 public:
-	int row();
-	int column();
-	void place(int row, int col);
-	virtual bool menaces(const Piece *p);
+	int row() const { return _row; }
+	int column() const { return _column; }
+	void place(int newRow, int newCol);
+	virtual bool menaces(const Piece &p) const = 0;
 };
 
 class Rook : public Piece {
-
+public:
+	virtual bool menaces(const Piece &p) const;
 };
 
 class Queen : public Rook {
+public:
+	virtual bool menaces(const Piece &p) const;
 };
 
-
-class Amazon : public Queen {
-
+class Knight : public Piece {
+public:
+	virtual bool menaces(const Piece &p) const;
 };
 
+class Amazon : public Queen, public Knight {
+public:
+	bool menaces(const Piece &p) const;
+};
 # endif
