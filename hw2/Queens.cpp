@@ -10,6 +10,10 @@
 
 int boardSize; 
 
+Rook *rooks;
+Queen *queens;
+Amazon *amazons;
+
 /*****************
 	PIECE	
 *****************/
@@ -52,31 +56,57 @@ bool Knight::menaces(const Piece &p) const {
 	AMAZON	
 *****************/
 bool Amazon::menaces(const Piece &p) const {
-	return Queen::menaces(p) || Knight::menaces(p);
+	/* From Knight class */
+	if (std::abs(p.row() - _row) == 2 && std::abs(p.column() - _column) == 1)
+		return true;
+	if (std::abs(p.row() - _row) == 1 && std::abs(p.column() - _column) == 2)
+		return true;
+	/* /Knight */
+	return Queen::menaces(p); // || Knight::menaces(p);
+}
+
+int getSolutions(Piece *pieces, int pieceNum) {
+	if (pieceNum >= boardSize)
+		return 1;
+
+	int numSolutions = 0;
+	bool isSolution;
+
+	for (int i = 0; i < boardSize; i++) {
+		pieces[pieceNum].place(pieceNum, i);
+		isSolution = true;
+		for (int j = 0; j < pieceNum; j++) {
+			if (pieces[pieceNum].menaces(pieces[j])) {
+				isSolution = false;	
+				break;
+			}
+		}
+		
+		if (isSolution)
+			numSolutions += getSolutions(pieces, pieceNum + 1);
+	}	
+
+	return numSolutions;
 }
 
 int main() {
 	std::cin >> boardSize;
-	
-	std::vector<Queen> pieces(boardSize);
-	int successes = 0;
-	bool succeeds;
 
-	for (int i = 0; i < boardSize; i++) {
-		for (int j = 0; j < boardSize; j++) {
-			succeeds = true;
-			pieces[i].place(i, j);
-			for (int k = 0; k < boardSize; k++) {
-				for (int l = 0; l < boardSize; l++) {
-					if (pieces[k].menaces(pieces[l]))
-						succeeds = false;
-				}
-			}
-			if (succeeds)
-				successes++;
-		}
-	}
-
+	rooks = new Rook[boardSize];
+	int successes = getSolutions(rooks, 0);
 	std::cout << "Number of sucesses: " << successes << std::endl;
+
+	queens = new Queen[boardSize];
+	successes = getSolutions(queens, 0);
+	std::cout << "Number of sucesses: " << successes << std::endl;
+
+	amazons = new Amazon[boardSize];
+	successes = getSolutions(amazons, 0);
+	std::cout << "Number of sucesses: " << successes << std::endl;
+
+	delete[] rooks;
+	delete[] queens;
+	delete[] amazons;
+
 	return 0;
 }

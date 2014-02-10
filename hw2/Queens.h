@@ -28,7 +28,8 @@ public:
 	virtual bool menaces(const Piece &p) const;
 };
 
-class Amazon : public Queen, public Knight {
+/* Should also inherit from Knight, but couldn't fix errors. */
+class Amazon : public Queen {
 public:
 	bool menaces(const Piece &p) const;
 };
