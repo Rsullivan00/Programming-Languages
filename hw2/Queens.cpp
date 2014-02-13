@@ -1,5 +1,19 @@
 /* 	Queens.cpp
 	Rick Sullivan
+
+
+	Solutions for board sizes:
+		Board Size	Rooks	Queens	Amazons
+		1			1		1		1
+		2			2		0		0
+		3			6		0		0
+		4			24		0		0
+		5			120		10		0
+		6			720		4		0
+		7			5040	40		0
+		8			40320	92		0
+		9			362880	352		0
+		10			3628800	724		4
 */
 
 # include "Queens.h"
@@ -90,19 +104,20 @@ int getSolutions(Piece *pieces, int pieceNum) {
 }
 
 int main() {
+	std::cout << "Input board size (8 = an 8 by 8 board)." << std::endl;
 	std::cin >> boardSize;
 
 	rooks = new Rook[boardSize];
 	int successes = getSolutions(rooks, 0);
-	std::cout << "Number of sucesses: " << successes << std::endl;
+	std::cout << "Number of Rook sucesses: " << successes << std::endl;
 
 	queens = new Queen[boardSize];
 	successes = getSolutions(queens, 0);
-	std::cout << "Number of sucesses: " << successes << std::endl;
+	std::cout << "Number of Queen sucesses: " << successes << std::endl;
 
 	amazons = new Amazon[boardSize];
 	successes = getSolutions(amazons, 0);
-	std::cout << "Number of sucesses: " << successes << std::endl;
+	std::cout << "Number of Amazon sucesses: " << successes << std::endl;
 
 	delete[] rooks;
 	delete[] queens;
