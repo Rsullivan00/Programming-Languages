@@ -103,5 +103,5 @@ y := stdin nextLine asInteger!
 
 y := stdin nextLine asInteger!
 
-[y = -1] whileFalse: [z := x member: y. z printNl.
+[y = -1] whileFalse: [(x member: y) printNl.
                        y := stdin nextLine asInteger]!
