@@ -1,37 +1,41 @@
-(define (insert node-list node)
+;   Rick Sullivan
+;   Programming Lanugeages HW 3
+;   Binary Search Tree in Scheme
+
+(define (insert tree node)
     (cond
-        ((null? node-list) 
-            node
+        ((null? tree) 
+            (list node '() '())
         )
 
-        ((> (car node-list) node) 
-            (append 
-                (cons (car node-lst) (insert (cadr node-list) node)) 
-                (cadr (cdr node-list))
+        ((> (car tree) node) 
+            (list
+                (car tree) (insert (cadr tree) node)
+                (caddr tree)
             )
         )
 
         (else 
-            (append 
-                (cons (car node-lst) (cadr node-lst)) 
-                (insert (cadr (cdr node-lst)) node)
+            (list
+                (car tree) (cadr tree)
+                (insert (caddr tree) node)
             )
         )
     )
 ) 
 
-(define (member tree node)
+(define (member? tree node)
     (cond 
         ((null? tree)
             #f    
         )
     
-        ((> node (car tree))
-            member (cadr tree) node
+        ((< node (car tree))
+            (member? (cadr tree) node)
         )
 
-        ((< node (car tree))
-            member (cadr (cdr tree)) node
+        ((> node (car tree))
+            (member? (caddr tree) node)
         )
 
         (else
@@ -45,10 +49,22 @@
         ((null? node) '())
 
         (else 
-            (append 
+            (list
                 (inorder (cadr node)) 
-                (cons (car node) (inorder (cadr (cdr node))))
+                (car node) (inorder (caddr node))
             )
         )
     )
 )
+
+(define (helper x tree)
+    (foldl insert tree x))
+
+(define (listToTree lst)
+    (helper lst '()))
+
+;;http://acm3.wustl.edu/functional/scm-breads.php
+(define (foldl f cur lst)
+    (if (null? lst)
+    cur
+    (foldl f (f cur (car lst)) (cdr lst))))
