@@ -1,13 +1,25 @@
 (define (filter f lst)
-    (if ((null? lst) '())
-        (else (if (f (car lst)) (cons (car lst)(f (cdr lst)))
-                (else (f (cdr lst))))
-        )
+    (cond
+        ((null? lst) '())
+        ((f (car lst)) (cons (car lst) (filter f (cdr lst))))
+        (else (filter f (cdr lst)))
     )
 )
 
 (define (quicksort f)
-    (if (null? f) '())
-    (else )
-) 
+    (cond
+        ((null? f) '())
+        (else 
+            (let*
+                (
+                    (h (car f))
+                    (t (cdr f))
+                    (below (lambda (x) (< x h)))
+                    (above (lambda (x) (>= x h)))
+                )
+                (append (quicksort (filter below t)) (cons h (quicksort (filter above t))))
+            )
+        )
+    ) 
+)
             
