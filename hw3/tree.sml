@@ -1,15 +1,16 @@
-datatype Tree = nil | root of Node;
+(* A tree can be represented as either an empty tree, or a root node *)
+datatype 'a Tree = Empty | Node of 'a * 'a Tree * 'a Tree
 
-datatype Node = left of Tree * right of Tree;
-
-fun insert x nil = x
+fun insert x Empty = Node(x, Empty, Empty)
+    (* Nothing in stored, so we have to reconstruct the tree.*)
   | insert x (Node(y, left, right)) =
         if x < y then
-            insert x left
+            Node(y, insert x left, right)
         else 
-            insert x right
+            Node(y, left, insert x right)
 
-fun member x nil = false
+
+fun member x Empty = false
   | member x (Node(y, left, right)) =
         if x < y then
             member x left
@@ -17,3 +18,4 @@ fun member x nil = false
             member x right
         else 
             true
+
